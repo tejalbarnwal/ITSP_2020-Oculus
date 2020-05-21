@@ -1,2 +1,2 @@
 #Progress Report
-# Almost Completed Kaggle Course, simultaneoudly started solving problems on HackerRank
+# Almost Completed Kaggle Course, simultaneously started solving problems on HackerRank
