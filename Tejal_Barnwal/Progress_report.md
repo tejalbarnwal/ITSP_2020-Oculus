@@ -1,8 +1,8 @@
 Srep 1: Completed with Kaggle microcourse on Python. <br/>
-Step 2: have done problems on HackerRank.
-Step 3:Completed opencv till 29 videos.
-Step 4: Implemented a mini project(airpin)
-Step 5: have implemented OCR.Additions are remaing to code
+Step 2: have done problems on HackerRank.<br>
+Step 3:Completed opencv till 29 videos.<br>
+Step 4: Implemented a mini project(airpin)<br>
+Step 5: have implemented OCR.Additions are remaing to code<br>
 
 ### Code for mini project-airpin
 ```python
