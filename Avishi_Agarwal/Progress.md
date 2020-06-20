@@ -97,5 +97,4 @@ os.system("start output_maths_page1.mp3")
 cv.waitKey(0)
 ```
 Image used in the above code: 
-![test_image]
-(https://github.com/tejalbarnwal/ITSP_2020-Oculus/blob/master/Avishi_Agarwal/test_image.jpeg)
+![test_image](https://github.com/tejalbarnwal/ITSP_2020-Oculus/blob/master/Avishi_Agarwal/test_image.jpeg)
