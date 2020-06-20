@@ -68,3 +68,33 @@ cap.release()
 cv2.destroyAllWindows()
 ```
 
+**Basic Implementation of OCR of a picture taken from phone and converting text to speech**
+```python
+import pytesseract
+import cv2 as cv
+import numpy as np
+from gtts import gTTS
+import os
+
+img = cv.imread('test_image.jpeg')
+img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+#_, th1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
+#th2 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 20, 10)
+th3 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 31, 11)
+
+cv.imshow("Image", img)
+#cv.imshow("THRESH_BINARY", th1)
+#cv.imshow("ADAPTIVE_THRESH_MEAN_C", th2)
+cv.imshow("ADAPTIVE_THRESH_GAUSSIAN_C", th3)
+
+my_text = pytesseract.image_to_string(th3)
+
+print(my_text)
+output = gTTS(my_text)
+output.save("output_maths_page1.mp3")
+os.system("start output_maths_page1.mp3")
+
+cv.waitKey(0)
+```
+Image used in the above code: 
+
