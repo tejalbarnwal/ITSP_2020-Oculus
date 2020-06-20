@@ -9,7 +9,7 @@ Started solving problems on HackerRank
 OpenCV Tutorials
 ## Rest of the Month
 Open CV Mini Project: Invisibilty Cloak
-'''python
+```python
 import cv2
 import numpy as np
 
@@ -66,4 +66,5 @@ while cap.isOpened():
 
 cap.release()
 cv2.destroyAllWindows()
-'''
+```
+
