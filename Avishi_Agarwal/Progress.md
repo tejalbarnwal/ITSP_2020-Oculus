@@ -8,7 +8,7 @@ Started solving problems on HackerRank
 ## Week 3
 OpenCV Tutorials
 ## Rest of the Month
-Open CV Mini Project: Invisibilty Cloak
+Open CV Mini Project: Invisibility Cloak
 ```python
 import cv2
 import numpy as np
