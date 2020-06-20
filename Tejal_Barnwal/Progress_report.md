@@ -4,7 +4,7 @@ Step 3:Completed opencv till 29 videos.<br>
 Step 4: Implemented a mini project(airpin)<br>
 Step 5: have implemented OCR.Additions are remaing to code<br>
 
-### Code for mini project-airpin
+### Code for mini project-airpen
 ```python
 import cv2
 import numpy as np
