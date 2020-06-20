@@ -7,3 +7,5 @@ Started solving problems on HackerRank
 
 ## Week 3
 OpenCV Tutorials
+## Rest of the Month
+Open CV Mini Project: Invisibilty Cloak
