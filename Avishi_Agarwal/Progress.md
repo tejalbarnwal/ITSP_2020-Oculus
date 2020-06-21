@@ -68,6 +68,7 @@ cap.release()
 cv2.destroyAllWindows()
 ```
 
+
 **Basic Implementation of OCR of a picture taken from phone and converting text to speech**
 ```python
 import pytesseract
@@ -98,3 +99,25 @@ cv.waitKey(0)
 ```
 Image used in the above code: 
 ![test_image](https://github.com/tejalbarnwal/ITSP_2020-Oculus/blob/master/Avishi_Agarwal/test_image.jpeg)
+
+
+**Implementation of converting PDF file to text, and applying text to speech**
+```python
+import PyPDF2
+from gtts import gTTS
+
+pdfFileObj = open("Short-stories-from-100-Selected-Stories.pdf", "rb")
+pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+
+mytext = ""
+
+for pageNum in range(1, 3):
+    pageObj = pdfReader.getPage(pageNum)
+    mytext = mytext + pageObj.extractText()
+
+print(mytext)
+pdfFileObj.close()
+
+tts = gTTS(text=mytext, lang='en')
+tts.save("story_test.mp3")
+```
