@@ -1,6 +1,6 @@
 # Progress Report
 ## Week 1
-Completed Kaggle Course on Python 
+Completed Kaggle Course on Python and learnt to use GitHub
 
 ## Week 2
 Started solving problems on HackerRank
