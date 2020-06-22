@@ -78,3 +78,32 @@ while(1):
 cv2.destroyAllWindows()
 
 ```
+### Code for sppech to text:simple implementation
+```python
+import pyaudio
+import speech_recognition as sr
+
+# Initialize recognizer class (for recognizing the speech)
+
+r = sr.Recognizer()
+
+# Reading Microphone as source
+# listening the speech and store in audio_text variable
+text=""
+with sr.Microphone() as source:
+
+    print("Talk")
+    r.adjust_for_ambient_noise(source)
+    print("go")
+    audio_text = r.listen(source)
+    print("Time over, thanks")
+    # recoginize_() method will throw a request error if the API is unreachable, hence using exception handling
+    text=text + r.recognize_google(audio_text)
+    print("Text: " ,text)
+
+if text=="read":
+    print(" doing ocr/reading pdf")
+
+if text =="right":
+    print("writing in google document")
+```
