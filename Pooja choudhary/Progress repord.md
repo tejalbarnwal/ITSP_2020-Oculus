@@ -73,6 +73,48 @@ cv2.waitKey(0)
 
 cv2.destroyAllWindows()
 ```
+# SAMPLE CODE
+```python
+import speech_recognition as sr
+from gtts import gTTS
+import os
+def output(text) :
+    my_txt = text
+    language = 'en'
+    voice_output = gTTS(my_txt, lang=language, slow=False)
+    voice_output.save('voice_output.mp3')
+    os.system('start voice_output.mp3')
+def listen() :
+    r = sr.Recognizer()
+    query = ''
+    with sr.Microphone() as m:
+        r.adjust_for_ambient_noise(m)
+        audio = r.listen(m)
+        query = query + r.recognize_google(audio, language='en-hi')
+        return query
+
+output('you want to read or write')
+command_1=listen()
+if command_1=='' :
+    print('empty')
+    output('thank you')
+
+elif command_1=='read' :
+    output('read pdf or image')
+    command_2=listen()
+
+    if command_2=='image' :
+        print('read')
+    elif command_2 =='file' :
+        print('pdf')
+elif command_1=='right' or command_1=='write' :
+    output('get started')
+    text_to_save=listen()
+    print(text_to_save)
+else :
+    output("thank's for using")
+
+```
 
 
 
