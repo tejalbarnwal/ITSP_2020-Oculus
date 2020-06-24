@@ -160,6 +160,7 @@ print(input1)
 if input1.lower() == "read":
     speak("Do you want to read a PDF or read an image?")
     input2 = listen()
+    
     if input2.lower() == "pdf":
 
         pdfFileObj = open("Short-stories-from-100-Selected-Stories.pdf", "rb")
@@ -174,6 +175,7 @@ if input1.lower() == "read":
         print(mytext)
         pdfFileObj.close()
         speak(mytext)
+        
     elif input2.lower() == "image":
 
         img = cv.imread('test_image.jpeg')
@@ -194,8 +196,12 @@ if input1.lower() == "read":
         cv.waitKey(0)
 
 elif input1.lower() == "write" or input1.lower() == "right":
-    speak("Start saying something")
-    print(listen())
+    speak("What should be the name of the file?")
+    name = listen()
+    name = name + ".txt"
+    with open(name, 'a+') as f:
+        speak("Start speaking")
+        f.write("\n"+listen())
 
 else:
     speak("Sorry, could not understand")
