@@ -25,6 +25,7 @@ The link to the proposal: https://docs.google.com/document/d/12q8lEGWqXQ-AYYyNfn
 
 * Complete the final project
 
+# Pseudo Code for the Project
 # Project Code
 ```python
 import speech_recognition as sr
