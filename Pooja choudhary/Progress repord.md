@@ -116,7 +116,9 @@ else :
 
 ```
 ## to connect phone camera with IP webcam
-install IP web cam in phone 
+download IP web cam in phone 
+both phone and laptop must be connected with same wifi network
+open Ip webcam ,click on start server , on the screen you will find a url , put this url value in code.
 ```python
 import requests
 import cv2
@@ -129,7 +131,7 @@ import urllib
 #ctx.check_hostname = False
 #ctx.verify_mode = ssl.CERT_NONE
 
-url = 'http://192.168.43.195:8080/shot.jpg'
+url = 'http://192.168.43.195:8080/shot.jpg' #this is an example url changes evert time
 imgResp = urllib.request.urlopen(url)
 imgNp = np.array(bytearray(imgResp.read()), dtype=np.uint8)
 img = cv2.imdecode(imgNp, -1)
