@@ -1,6 +1,6 @@
 # ITSP 2020 Oculus
 
-This project is a camera-based assistive text reader for blinds. It involves Text Extraction from the image and converting the Text to Speech using a Raspberry Pi.
+This project is a camera-based assistive text reader for blinds. It involves Text Extraction from the image and converting the Text to Speech, with other functionalities like converting text in a pdf of text file into audio, converting speech into text and storing it in a text file, and searching wikipedia.
 
 The link to the proposal: https://docs.google.com/document/d/12q8lEGWqXQ-AYYyNfnh2pguzVVLyLeU-5o1twalN61E/edit?usp=sharing
 ## Weekly Targets
@@ -65,22 +65,22 @@ def listen():
 
 
 # Welcome message
-speak("Hi, Do you want to read or write or search?")
+speak("Hi, Do you want to read, write or search?")
 
 # Taking input from user
 input1 = listen()
 print(input1)
 if input1.lower() == "read" :
    
-    speak("Do you want to read a PDF or read an image?")
+    speak("Do you want to read an existing file or read an image?")
     input2 = listen()
 
-    if input2.lower() == "pdf":
+    if input2.lower() == "existing file":
         
         speak("Say the name of the file you want to read?")
         name=listen()
         
-        speak("is it a pdf or a text file?")
+        speak("Is it a PDF or a text file?")
         type_of_file=listen()
 
         if type_of_file == "pdf":
@@ -191,7 +191,7 @@ elif input1.lower() == "write" or input1.lower() == "right":
 
 
 elif input1.lower() == "search":
-    speak("What do you want to search for?")
+    speak("What do you want to search?")
     search=listen()
     result=wikipedia.summary(search,sentences=1)
     speak("According to wikipedia,  " + result)
