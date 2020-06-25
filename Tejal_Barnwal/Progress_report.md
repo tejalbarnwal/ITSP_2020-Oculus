@@ -318,3 +318,8 @@ elif input1.lower() == "search":
 else:
     os.remove("Sound.mp3")
     speak("Sorry, could not understand")
+    
+```
+
+The code has been tested and the result of an input image given through http server is been attached in folder as poetry.jpeg, poetrygtts.mp3 <br>
+
