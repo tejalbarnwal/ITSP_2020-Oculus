@@ -125,7 +125,7 @@ import cv2
 import numpy as np
 import urllib
 
-url = 'http://192.168.43.195:8080/shot.jpg' #this is an example url changes evert time
+url = 'http://192.168.43.195:8080/shot.jpg' #this is an example, url changes every time
 imgResp = urllib.request.urlopen(url)
 imgNp = np.array(bytearray(imgResp.read()), dtype=np.uint8)
 img = cv2.imdecode(imgNp, -1)
