@@ -123,13 +123,7 @@ open Ip webcam ,click on start server , on the screen you will find a url , put 
 import requests
 import cv2
 import numpy as np
-import ssl
 import urllib
-#print(dir(requests.urllib3))
-#help(urllib.request.urlopen)
-#ctx = ssl.create_default_context()
-#ctx.check_hostname = False
-#ctx.verify_mode = ssl.CERT_NONE
 
 url = 'http://192.168.43.195:8080/shot.jpg' #this is an example url changes evert time
 imgResp = urllib.request.urlopen(url)
