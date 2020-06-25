@@ -25,7 +25,7 @@ The link to the proposal: https://docs.google.com/document/d/12q8lEGWqXQ-AYYyNfn
 
 * Complete the final project
 
-#Project Code
+# Project Code
 ```python
 import speech_recognition as sr
 from playsound import playsound
