@@ -31,9 +31,15 @@ import speech_recognition as sr
 from playsound import playsound
 from gtts import gTTS
 import os
-import cv2 as cv
+import cv2
 import pytesseract
+import wikipedia
+import requests
+import numpy as np
+from skimage.filters import threshold_local
+import imutils
 import PyPDF2
+from pyimagesearch.transform import four_point_transform
 
 
 def speak(str):
@@ -46,65 +52,151 @@ def speak(str):
 def listen():
     "Listens for speech, converts it into text and returns the text"
     r = sr.Recognizer()  # creating an instance of class Recognizer
-    mic = sr.Microphone(0)  # Using first microphone (default) in list of mics
-    with mic as source:
+      # Using first microphone (default) in list of mics
+    with sr.Microphone() as source:
+        print("talk")
         r.adjust_for_ambient_noise(source)
+        print("go")
         audio = r.listen(source)
+        print("done")
+
     input_text = r.recognize_google(audio)  # Google Web Speech API; input_text will store response of user
     return input_text
 
 
 # Welcome message
-speak("Hi, Do you want to read or write?")
+speak("Hi, Do you want to read or write or search?")
 
 # Taking input from user
 input1 = listen()
 print(input1)
-if input1.lower() == "read":
+if input1.lower() == "read" :
+   
     speak("Do you want to read a PDF or read an image?")
     input2 = listen()
-    
+
     if input2.lower() == "pdf":
-
-        pdfFileObj = open("Short-stories-from-100-Selected-Stories.pdf", "rb")
-        pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-
-        mytext = ""
-
-        for pageNum in range(1, 3):
-            pageObj = pdfReader.getPage(pageNum)
-            mytext = mytext + pageObj.extractText()
-
-        print(mytext)
-        pdfFileObj.close()
-        speak(mytext)
         
+        speak("Say the name of the file you want to read?")
+        name=listen()
+        
+        speak("is it a pdf or a text file?")
+        type_of_file=listen()
+
+        if type_of_file == "pdf":
+            pdfFileObj = open(name+".pdf", "rb")
+            pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+
+            mytext = ""
+
+            for pageNum in range(1, 3):
+                pageObj = pdfReader.getPage(pageNum)
+                mytext = mytext + pageObj.extractText()
+
+            print(mytext)
+            pdfFileObj.close()
+            speak(mytext)
+
+        if type_of_file == "text":
+            file=open(name+".txt" ,"r")
+            mytext=file.read()
+            print(mytext)
+            speak(mytext)
+
+
     elif input2.lower() == "image":
+        url = "http://192.168.0.102:8080/shot.jpg"
+        img_resp = requests.get(url)
+        img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
+        image = cv2.imdecode(img_arr, -1)
 
-        img = cv.imread('test_image.jpeg')
-        img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        # _, th1 = cv.threshold(img, 127, 255, cv.THRESH_BINARY)
-        # th2 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, 20, 10)
-        th3 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 31, 11)
+        #image = cv2.imread('//Users/avishi/Desktop/WhatsApp Image 2020-06-25 at 4.21.41 PM.jpeg')
+        ratio = image.shape[0] / 500.0
+        orig = image.copy()
+        image = imutils.resize(image, height=500)
+        cv2.imwrite("poetry.jpeg", image)
+        # convert the image to grayscale, blur it, and find edges
+        # in the image
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (5, 5), 0)
+        edged = cv2.Canny(gray, 75, 200)
 
-        cv.imshow("Image", img)
-        # cv.imshow("THRESH_BINARY", th1)
-        # cv.imshow("ADAPTIVE_THRESH_MEAN_C", th2)
-        cv.imshow("ADAPTIVE_THRESH_GAUSSIAN_C", th3)
+        # show the original image and the edge detected image
+        print("STEP 1: Edge Detection")
+        cv2.imshow("Image", image)
+        cv2.imshow("Edged", edged)
+        cv2.waitKey(1)
+        #cv2.destroyAllWindows()
 
-        my_text = pytesseract.image_to_string(th3)
+        # find the contours in the edged image, keeping only the
+        # largest ones, and initialize the screen contour
+        cnts = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
+        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
+
+        # loop over the contours
+        for c in cnts:
+            # approximate the contour
+            peri = cv2.arcLength(c, True)
+            approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+
+            # if our approximated contour has four points, then we
+            # can assume that we have found our screen
+            if len(approx) == 4:
+                screenCnt = approx
+                break
+
+        # show the contour (outline) of the piece of paper
+        print("STEP 2: Find contours of paper")
+        cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 2)
+        cv2.imshow("Outline", image)
+        cv2.waitKey(1)
+        #cv2.destroyAllWindows()
+
+        # apply the four point transform to obtain a top-down
+        # view of the original image
+        warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
+
+        # convert the warped image to grayscale, then threshold it
+        # to give it that 'black and white' paper effect
+        warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+        T = threshold_local(warped, 15, offset=10, method="gaussian")
+        warped = (warped > T).astype("uint8") * 255
+
+        # show the original and scanned images
+        print("STEP 3: Apply perspective transform")
+        cv2.imshow("Original", imutils.resize(orig, height=650))
+        cv2.imshow("Scanned", imutils.resize(warped, height=650))
+        cv2.waitKey(1)
+
+        my_text = pytesseract.image_to_string(warped)
 
         print(my_text)
+        cv2.waitKey(1)
         speak(my_text)
-        cv.waitKey(0)
+
+        if cv2.waitKey(0)==27:
+
+            cv2.destroyAllWindows()
+
 
 elif input1.lower() == "write" or input1.lower() == "right":
+    
     speak("What should be the name of the file?")
     name = listen()
-    name = name + ".txt"
+    name = name.lower() + ".txt"
     with open(name, 'a+') as f:
         speak("Start speaking")
-        f.write("\n"+listen())
+        f.write("\n" + listen())
+
+
+elif input1.lower() == "search":
+    speak("What do you want to search for?")
+    search=listen()
+    result=wikipedia.summary(search,sentences=1)
+    speak("According to wikipedia,  " + result)
+
+
 
 else:
     speak("Sorry, could not understand")
