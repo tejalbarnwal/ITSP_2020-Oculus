@@ -25,7 +25,7 @@ The link to the proposal: https://docs.google.com/document/d/12q8lEGWqXQ-AYYyNfn
 
 * Complete the final project
 
-# Pseudo Code for the Project
+
 # Project Code
 ```python
 import speech_recognition as sr
@@ -53,14 +53,10 @@ def speak(str):
 def listen():
     "Listens for speech, converts it into text and returns the text"
     r = sr.Recognizer()  # creating an instance of class Recognizer
-      # Using first microphone (default) in list of mics
+    mic = sr.Microphone(0) # Using first microphone (default) in list of mics
     with sr.Microphone() as source:
-        print("talk")
         r.adjust_for_ambient_noise(source)
-        print("go")
         audio = r.listen(source)
-        print("done")
-
     input_text = r.recognize_google(audio)  # Google Web Speech API; input_text will store response of user
     return input_text
 
@@ -106,12 +102,12 @@ if input1.lower() == "read" :
 
 
     elif input2.lower() == "image":
-        url = "http://192.168.0.102:8080/shot.jpg"
+        speak("You have 5 seconds to click the picture")
+        url = "http://192.168.0.102:8080/shot.jpg" #url is generated in IP Webcam app used in phone
         img_resp = requests.get(url)
         img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
         image = cv2.imdecode(img_arr, -1)
 
-        #image = cv2.imread('//Users/avishi/Desktop/WhatsApp Image 2020-06-25 at 4.21.41 PM.jpeg')
         ratio = image.shape[0] / 500.0
         orig = image.copy()
         image = imutils.resize(image, height=500)
